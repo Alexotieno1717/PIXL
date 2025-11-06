@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use http\Exception\InvalidArgumentException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,30 @@ class Follow extends Model
         'follower_profile_id',
         'following_profile_id',
     ];
+
+    public static function createFollow(Profile $follower, Profile $following): Follow
+    {
+        if ($follower->id === $following->id) {
+            throw new \InvalidArgumentException('profile cannot follow it self');
+        }
+
+        return static::firstOrCreate([
+            'follower_profile_id'  => $follower->id,
+            'following_profile_id' => $following->id,
+        ]);
+    }
+
+    public static function removeFollow( Profile $follower, Profile $following): bool
+    {
+        if ($follower->id === $following->id) {
+            throw new \InvalidArgumentException('profile cannot follow it self');
+        }
+
+        return static::where('follower_profile_id', $follower->id)
+            ->where('following_profile_id', $following->id)
+            ->delete() > 0;
+
+    }
 
     public function follower(): BelongsTo
     {
