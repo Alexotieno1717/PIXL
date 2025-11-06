@@ -20,8 +20,8 @@ class ProfileFactory extends Factory
         return [
             'user_id' =>User::factory(),
             'display_name' => $this->faker->name(),
-            'bio' => $this->faker->sentence(3),
-            'avatar' => $this->faker->imageUrl(90, 90, 'people'),
+            'bio' => $this->faker->sentence(3, true),
+            'avatar_url' => $this->faker->imageUrl(90, 90, 'people'),
             'handle' => $this->faker->unique()->userName(),
         ];
     }

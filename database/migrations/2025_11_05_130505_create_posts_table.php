@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('profile_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('parent_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('repost_of_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('posts')->cascadeOnDelete();
+            $table->foreignId('repost_of_id')->nullable()->constrained('posts')->cascadeOnDelete();
             $table->string('content')->nullable();
             $table->timestamps();
 

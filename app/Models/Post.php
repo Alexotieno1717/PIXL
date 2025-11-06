@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use LaravelIdea\Helper\App\Models\_IH_Profile_C;
 
 class Post extends Model
 {
@@ -15,7 +16,18 @@ class Post extends Model
         'profile_id',
         'parent_id',
         'content',
+        'repost_of_id',
     ];
+
+    public static function publish(Profile $profile, string $content): self
+    {
+        return static::create([
+            'profile_id' => $profile->id,
+            'content' => $content,
+            'parent_id' => null,
+            'repost_of_id' => null,
+        ]);
+    }
 
     public function profile(): BelongsTo
     {
