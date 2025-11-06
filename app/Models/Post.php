@@ -29,6 +29,16 @@ class Post extends Model
         ]);
     }
 
+    public static function reply( Profile $profile, Post $original, string $content):Post
+    {
+        return static::create([
+            'profile_id' => $profile->id,
+            'content' => $content,
+            'parent_id' => $original->id,
+            'repost_of_id' => null,
+        ]);
+    }
+
     public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class);
