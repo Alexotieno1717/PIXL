@@ -39,6 +39,16 @@ class Post extends Model
         ]);
     }
 
+    public static function repost(Profile $profile, Post $original, string $content= null): Post
+    {
+        return static::create([
+            'profile_id' => $profile->id,
+            'content' => $content,
+            'parent_id' => null,
+            'repost_of_id' => $original->id,
+        ]);
+    }
+
     public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class);
@@ -62,5 +72,10 @@ class Post extends Model
     public function reposts(): HasMany
     {
         return $this->hasMany(Post::class, 'repost_of_id');
+    }
+
+    public function repostOf(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'repost_of_id');
     }
 }

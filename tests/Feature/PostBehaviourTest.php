@@ -28,7 +28,7 @@ test('can reply to a post', function () {
 
 });
 
-test('can have may replies', function () {
+test('can have many replies', function () {
     $original = Post::factory()->create();
     $replies = Post::factory()->count(4)->reply($original)->create();
 
@@ -36,5 +36,42 @@ test('can have may replies', function () {
     expect($replies->first()->parent->is($original))->toBeTrue()
         ->and($original->replies)->toHaveCount(4)
         ->and($original->replies->contains($replies->first()))->toBeTrue();
+
+});
+
+
+test('create plain repost', function () {
+    $original = Post::factory()->create();
+
+    $repostProfile = Profile::factory()->create();
+    $repost = Post::repost($repostProfile, $original);
+
+    expect($repost->repostOf->is($original))->toBeTrue()
+        ->and($original->reposts)->toHaveCount(1)
+        ->and($repost->content)->toBeNull();
+
+});
+
+test('can have many reposts', function () {
+    $original = Post::factory()->create();
+    $reposts = Post::factory()->count(4)->repost($original)->create();
+
+
+    expect($reposts->first()->repostOf->is($original))->toBeTrue()
+        ->and($original->reposts)->toHaveCount(4)
+        ->and($original->reposts->contains($reposts->first()))->toBeTrue();
+
+});
+
+test('create quote repost', function () {
+    $content = 'Quote repost';
+    $original = Post::factory()->create();
+
+    $repostProfile = Profile::factory()->create();
+    $repost = Post::repost($repostProfile, $original, $content);
+
+    expect($repost->repostOf->is($original))->toBeTrue()
+        ->and($original->reposts)->toHaveCount(1)
+        ->and($repost->content)->toBe($content);
 
 });
