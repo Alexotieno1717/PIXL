@@ -41,12 +41,19 @@ class Post extends Model
 
     public static function repost(Profile $profile, Post $original, string $content= null): Post
     {
-        return static::create([
+        return static::firstOrCreate([
             'profile_id' => $profile->id,
             'content' => $content,
             'parent_id' => null,
             'repost_of_id' => $original->id,
         ]);
+    }
+
+    public static function removeRepost(Profile $profile, Post $original): bool
+    {
+        return static::where('profile_id', $profile->id)
+            ->where('repost_of_id', $original->id)
+            ->delete() > 0;
     }
 
     public function profile(): BelongsTo
