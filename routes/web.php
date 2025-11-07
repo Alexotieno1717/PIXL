@@ -89,3 +89,4 @@ Route::get('profile/', function () {
     return view('profile', compact('feedItems'));
 });
 Route::get('/{profile:handle}', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/{profile:handle}/with_replies', [ProfileController::class, 'replies'])->name('profile.replies');
