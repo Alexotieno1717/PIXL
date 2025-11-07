@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -47,6 +48,7 @@ Route::get('feed/', function () {
     return view('feed', compact('feedItems'));
 });
 
+
 Route::get('profile/', function () {
     $feedItems = json_decode(json_encode([
         [
@@ -86,3 +88,4 @@ Route::get('profile/', function () {
     ]));
     return view('profile', compact('feedItems'));
 });
+Route::get('/{profile:handle}', [ProfileController::class, 'show'])->name('profile.show');
