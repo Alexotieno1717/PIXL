@@ -14,6 +14,10 @@ Route::get('/dev/login', function () {
     Auth::login($user);
     request()->session()->regenerate();
     return redirect()->intended(route('profile.show', $user->profile));
+})->name('login');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [PostController::class, 'index'])->name('post.index');
 });
 
 Route::get('/dev/logout', function () {
