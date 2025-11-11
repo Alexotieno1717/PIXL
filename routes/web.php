@@ -18,6 +18,7 @@ Route::get('/dev/login', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [PostController::class, 'index'])->name('post.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('post.store');
 });
 
 Route::get('/dev/logout', function () {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Queries\TimelineQuery;
@@ -17,7 +18,7 @@ class PostController extends Controller
 
         $posts = TimelineQuery::forViewer($profile)->get();
 
-        return view('posts.index', compact('posts'));
+        return view('posts.index', compact('posts', 'profile'));
 
     }
 
@@ -48,6 +49,14 @@ class PostController extends Controller
         return view('posts.show', compact('profile', 'post'));
     }
 
+    public function store(CreatePostRequest $request)
+    {
+        $profile = Auth::user()->profile;
+
+        $post = Post::publish($profile, $request->content);
+
+        return redirect(route('post.index'));
+    }
 
 
 }
