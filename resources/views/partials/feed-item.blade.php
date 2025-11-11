@@ -269,18 +269,7 @@
                 </div>
             </div>
             <!-- Reply form -->
-            <div
-                class="border-pixel-light/10 bg-pixel-light/[3%] mt-8 flex items-start gap-4 border-t p-4"
-            >
-                <a href="/profile" class="shrink-0">
-                    <img
-                        src="/images/adrian.png"
-                        alt="Avatar for Adrian"
-                        class="size-10 object-cover"
-                    />
-                </a>
-                @include('partials.post-form', ['labelText' => 'Reply body', 'fieldName' => 'reply', 'placeholder' => "Reply to {$item->profile->displayName} post", 'rows' => 5])
-            </div>
+           <x-reply-form />
         </div>
         <!-- Threaded replies -->
         <ol>

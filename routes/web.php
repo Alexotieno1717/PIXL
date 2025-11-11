@@ -17,8 +17,13 @@ Route::get('/dev/login', function () {
 })->name('login');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', [PostController::class, 'index'])->name('post.index');
-    Route::post('/posts', [PostController::class, 'store'])->name('post.store');
+    Route::get('/home', [PostController::class, 'index'])->name('posts.index');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+
+    Route::scopeBindings()->group(function () {
+        Route::post('/{profile:handle}/status/{post}/reply', [PostController::class, 'reply'])
+            ->name('posts.reply');
+    });
 });
 
 Route::get('/dev/logout', function () {

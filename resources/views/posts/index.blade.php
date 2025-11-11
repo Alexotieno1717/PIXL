@@ -22,22 +22,7 @@
         </div>
 
         <!-- Post prompt -->
-        <div
-            class="border-pixel-light/10 mt-8 flex items-start gap-4 border-b pb-4"
-        >
-            <a href="{{ route('profile.show', $profile) }}" class="shrink-0">
-                <img
-                    src="{{ $profile->avatar_url }}"
-                    alt="Avatar for {{ $profile->display_name }}"
-                    class="size-10 object-cover"
-                />
-            </a>
-            <x-post-form
-                :label-text="'Post Body'"
-                :field-name="'content'"
-                :placeholder="'What\'s up'. $profile->handle . '?'"
-                :action="route('post.store')"
-            />
+            <x-post-form />
         </div>
 
         <!-- Feed -->

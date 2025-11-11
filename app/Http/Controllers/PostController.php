@@ -55,7 +55,16 @@ class PostController extends Controller
 
         $post = Post::publish($profile, $request->content);
 
-        return redirect(route('post.index'));
+        return redirect(route('posts.index'));
+    }
+
+    public function reply(Profile $profile, Post $post, CreatePostRequest $request)
+    {
+        $currentProfile = Auth::user()->profile;
+
+        $post = Post::reply($currentProfile, $post, $request->content);
+
+        return redirect(route('posts.index'));
     }
 
 

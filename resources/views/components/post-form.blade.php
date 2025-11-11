@@ -1,11 +1,22 @@
-<form class="grow" method="POST" action="{{ $action }}">
+<div
+    class="border-pixel-light/10 mt-8 flex items-start gap-4 border-b pb-4"
+>
+    <a href="{{ route('profile.show', $profile) }}" class="shrink-0">
+        <img
+            src="{{ $profile->avatar_url }}"
+            alt="Avatar for {{ $profile->display_name }}"
+            class="size-10 object-cover"
+        />
+    </a>
+
+<form class="grow" method="POST" action="{{ route('posts.store') }}">
     @csrf
-    <label class="sr-only" for="{{ $fieldName }}">{{ $labelText }}</label>
+    <label class="sr-only" for="content">Post Body</label>
     <textarea
         class="w-full resize-none text-lg"
-        name="{{ $fieldName }}"
-        id="{{ $fieldName }}"
-        placeholder="{{ $placeholder }}"
+        name="content"
+        id="content"
+        placeholder="What\'s up {{ $profile->handle }}?"
         @if(!empty($rows)) rows="{{ $rows }}" @endif
     ></textarea>
     <div class="flex items-center justify-between gap-4">
@@ -131,3 +142,4 @@
         </button>
     </div>
 </form>
+</div>

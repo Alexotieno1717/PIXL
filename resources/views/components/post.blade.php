@@ -298,6 +298,8 @@
                 </div>
             </div>
             @endif
+
+            <x-reply-form :post="$post" />
         </div>
         @if($showReplies)
             <!-- Threaded replies -->
