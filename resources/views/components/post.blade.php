@@ -1,5 +1,5 @@
 <li class="flex items-start gap-4 not-first:pt-2.5">
-    <a href="/profile" class="shrink-0">
+    <a href="/{{ $post->profile->handle }}" class="shrink-0">
         <img
             src="{{ $post->profile->avatar_url }}"
             alt="Avatar for {{ $post->profile->displayName }}"
@@ -12,7 +12,7 @@
             <div class="flex items-center justify-between gap-4">
                 <div class="flex items-center gap-2.5">
                     <p><a class="hover:underline" href="/{{ $post->profile->handle }}">{{ $post->profile->display_name }}</a></p>
-                    <p class="text-pixel-light/40 text-xs">{{ $post->created_at }}</p>
+                    <p class="text-pixel-light/40 text-xs"><a href="{{ route('post.show', [$post->profile, $post]) }}" >{{ $post->created_at }}</a></p>
                     <p>
                         <a
                             class="text-pixel-light/40 hover:text-pixel-light/60 text-xs"
@@ -283,12 +283,12 @@
             </div>
             @endif
         </div>
-        @if($showReplies && $post->relationLoaded('replies'))
+        @if($showReplies)
             <!-- Threaded replies -->
             <ol>
                 <!-- Reply -->
                 @foreach($post->replies as $reply)
-                    <x-reply :post="$reply" />
+                    <x-reply :post="$reply" :show-engagement="$showEngagement" :show-replies="$showReplies" />
                 @endforeach
                 <!-- More replies... -->
             </ol>
