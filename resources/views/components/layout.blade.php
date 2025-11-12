@@ -8,8 +8,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-pixel-dark text-pixel-light flex gap-16 px-4 h-dvh overflow-clip">
+    <x-navigation />
 
-    {{ $slot }}
+        {{ $slot }}
 
+    <x-aside />
 </body>
 </html>
