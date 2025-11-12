@@ -4,33 +4,29 @@ namespace App\Queries;
 
 use App\Models\Post;
 use App\Models\Profile;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
-class ProfileWithRepliesQuery
-{
+class ProfileWithRepliesQuery {
 
-    public function __construct(private Profile $subject, private ?Profile $viewer)
-    {
+    public function __construct(
+        private Profile $subject,
+        private ?Profile $viewer) {}
 
-    }
-
-    public static function for(Profile $subject, ?Profile $viewer): self
-    {
+    public static function for(Profile $subject, ?Profile $viewer) : self {
         return new self($subject, $viewer);
     }
 
-    public function paginate(int $perPage = 20): LengthAwarePaginator
-    {
-        return $this->baseQuery()->paginate($perPage)->through(fn($p) => $this->normalize($p));
+    public function paginate(int $perPage = 20) : LengthAwarePaginator {
+        return $this->baseQuery()->paginate($perPage)->through(fn ($p) => $this->normalize($p));
     }
 
-    public function get(): \Illuminate\Support\Collection
-    {
+    public function get() : Collection {
         return $this->baseQuery()->get()->map(fn($p) => $this->normalize($p));
     }
 
-    private function baseQuery()
-    {
+    private function baseQuery() : Builder {
         $viewerId = $this->viewer?->id ?? 0;
 
         $posts = Post::query()
@@ -40,10 +36,11 @@ class ProfileWithRepliesQuery
             )
             ->orWhereHas('replies', fn($q) => $q
                 ->whereBelongsTo($this->subject, 'profile')
-            )->with([
+            )
+            ->with([
                 'profile',
                 'repostOf' => fn($q) => $q
-                    ->withCount(['likes', 'replies', 'reposts'])
+                    ->withCount(['likes', 'reposts', 'replies'])
                     ->with('profile'),
                 'repostOf.profile',
                 'parent.profile',
@@ -52,7 +49,7 @@ class ProfileWithRepliesQuery
                     ->with('profile')
                     ->oldest()
             ])
-            ->withCount(['likes', 'replies', 'reposts'])
+            ->withCount(['likes', 'reposts', 'replies'])
             ->withExists([
                 'likes as has_liked' => fn($q) => $q->where('profile_id', $viewerId),
                 'reposts as has_reposted' => fn($q) => $q->where('profile_id', $viewerId),
@@ -66,11 +63,10 @@ class ProfileWithRepliesQuery
         return $posts;
     }
 
-    private function normalize (Post $post): Post
-    {
-        if ($post->isRepost() && is_null($post->content)){
-            $post->repostOf()->has_liked = (bool) $post->like_original;
-            $post->repostOf()->has_reposted = (bool) $post->repost_original;
+    private function normalize(Post $post) : Post {
+        if ($post->isRepost() && is_null($post->content)) {
+            $post->repostOf->has_liked = (bool) $post->like_original;
+            $post->repostOf->has_reposted = (bool) $post->repost_original;
         }
 
         return $post;

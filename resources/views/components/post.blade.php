@@ -56,15 +56,12 @@
             <div class="mt-6 flex items-center justify-between gap-4">
 
                 <div class="flex items-center gap-8">
-
-                        <!-- Like -->
-                        <x-like-button :active="$post->has_liked" :count="$post->likes_count" :id="$post->id" />
-
-                        <!-- Comment -->
-                        <x-reply-button :count="$post->replies_count" :id="$post->id" />
-
-                        <!-- Re-post -->
-                        <x-repost-button :active="$post->has_reposted" :count="$post->reposts_count" :id="$post->id" />
+                    <!-- Like -->
+                    <x-like-button :active="$post->has_liked" :count="$post->likes_count" :id="$post->id" />
+                    <!-- Comment -->
+                    <x-reply-button :count="$post->replies_count" :id="$post->id" />
+                    <!-- Re-post -->
+                    <x-repost-button :active="$post->has_reposted" :count="$post->reposts_count" :id="$post->id" />
 
                 </div>
                 <div class="flex items-center gap-3">
