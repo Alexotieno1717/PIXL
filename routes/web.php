@@ -48,7 +48,7 @@ Route::get('/dev/logout', function () {
     Auth::logout();
     request()->session()->invalidate();
     request()->session()->regenerateToken();
-    return redirect()->intended('/feed');
+    return redirect()->intended('/home');
 });
 
 Route::get('/{profile:handle}', [ProfileController::class, 'show'])->name('profile.show');
