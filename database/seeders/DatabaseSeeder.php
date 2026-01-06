@@ -6,7 +6,6 @@ use App\Models\Follow;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\Profile;
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,29 +18,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       $profiles = Profile::factory()->count(20)->create();
+        $profiles = Profile::factory()->count(20)->create();
 
-       foreach ($profiles as $profile) {
-           Post::factory()->count(5)->create(['profile_id' => $profile->id]);
-       }
+        foreach ($profiles as $profile) {
+            Post::factory()->count(5)->create(['profile_id' => $profile->id]);
+        }
 
-       $posts = Post::all();
+        $posts = Post::all();
 
-       foreach ($profiles as $profile) {
-           $toFollow = $profiles->except($profile->id)->random(3, 7);
+        foreach ($profiles as $profile) {
+            $toFollow = $profiles->except($profile->id)->random(3, 7);
 
-           foreach ($toFollow as $target) {
-               Follow::createFollow($profile, $target);
-           }
-       }
+            foreach ($toFollow as $target) {
+                Follow::createFollow($profile, $target);
+            }
+        }
 
-       foreach ($profiles as $profile) {
-           $toLike = $posts->where('profile_id', '!=', $profile->id)->random(10, 20);
+        foreach ($profiles as $profile) {
+            $toLike = $posts->where('profile_id', '!=', $profile->id)->random(10, 20);
 
-           foreach ($toLike as $post) {
-               Like::createLike($profile, $post);
-           }
-       }
+            foreach ($toLike as $post) {
+                Like::createLike($profile, $post);
+            }
+        }
 
         foreach ($profiles as $profile) {
             $toRepost = $posts->where('profile_id', '!=', $profile->id)->random(2, 5);

@@ -11,6 +11,7 @@ use Illuminate\View\Component;
 class ReplyForm extends Component
 {
     public Profile $profile;
+
     /**
      * Create a new component instance.
      */

@@ -25,7 +25,7 @@ class ArtistToFollow extends Component
     {
         if (Auth::check()) {
             $profile = Auth::user()->profile;
-            $query = Profile::whereDoesntHave('followers', fn($query) => $query->where('follower_profile_id', $profile->id))
+            $query = Profile::whereDoesntHave('followers', fn ($query) => $query->where('follower_profile_id', $profile->id))
                 ->where('id', '!=', $profile->id);
         } else {
             $query = Profile::query();

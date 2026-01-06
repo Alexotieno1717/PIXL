@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use LaravelIdea\Helper\App\Models\_IH_Profile_C;
 
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
+
     protected $fillable = [
         'profile_id',
         'parent_id',
@@ -29,7 +29,7 @@ class Post extends Model
         ]);
     }
 
-    public static function reply( Profile $profile, Post $original, string $content):Post
+    public static function reply(Profile $profile, Post $original, string $content): Post
     {
         return static::create([
             'profile_id' => $profile->id,
@@ -39,7 +39,7 @@ class Post extends Model
         ]);
     }
 
-    public static function repost(Profile $profile, Post $original, string $content= null): Post
+    public static function repost(Profile $profile, Post $original, ?string $content = null): Post
     {
         return static::firstOrCreate([
             'profile_id' => $profile->id,
@@ -66,12 +66,12 @@ class Post extends Model
         return $this->belongsTo(Post::class, 'parent_id');
     }
 
-    public function replies():HasMany
+    public function replies(): HasMany
     {
         return $this->hasMany(Post::class, 'parent_id');
     }
 
-    public function likes():HasMany
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
     }
@@ -86,7 +86,7 @@ class Post extends Model
         return $this->belongsTo(Post::class, 'repost_of_id');
     }
 
-    public function isRepost() : bool
+    public function isRepost(): bool
     {
         return $this->repost_of_id != null;
     }

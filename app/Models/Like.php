@@ -20,7 +20,7 @@ class Like extends Model
     {
         return static::firstOrCreate([
             'profile_id' => $profile->id,
-            'post_id' => $post->id
+            'post_id' => $post->id,
         ]);
     }
 
@@ -31,12 +31,12 @@ class Like extends Model
             ->delete() > 0;
     }
 
-    public function profile():BelongsTo
+    public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class);
     }
 
-    public function post():BelongsTo
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }

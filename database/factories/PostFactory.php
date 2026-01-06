@@ -25,17 +25,17 @@ class PostFactory extends Factory
         ];
     }
 
-//    public function reply(Post $parentPost)
-//    {
-//        return $this->state([
-//            'profile_id' => $parentPost->id,
-//            'content' => $this->faker->realText(200),
-//        ]);
-//    }
+    //    public function reply(Post $parentPost)
+    //    {
+    //        return $this->state([
+    //            'profile_id' => $parentPost->id,
+    //            'content' => $this->faker->realText(200),
+    //        ]);
+    //    }
 
     public function reply(Post $original)
     {
-        return $this->state(fn() => [
+        return $this->state(fn () => [
             'parent_id' => $original->id,
             'content' => $this->faker->realText(200),
         ]);

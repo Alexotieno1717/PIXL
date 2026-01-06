@@ -8,12 +8,10 @@ use App\Models\Post;
 use App\Models\Profile;
 use App\Queries\PostThreadQuery;
 use App\Queries\TimelineQuery;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-
     public function index()
     {
         $profile = Auth::user()->profile;
@@ -28,7 +26,6 @@ class PostController extends Controller
     public function show(Profile $profile, Post $post)
     {
         $post = PostThreadQuery::for($post, Auth::user()?->profile)->load();
-
 
         return view('posts.show', compact('profile', 'post'));
     }
@@ -92,20 +89,20 @@ class PostController extends Controller
         $currentProfile = Auth::user()->profile;
         $success = false;
 
-        if ($currentProfile->id === $profile->id){
+        if ($currentProfile->id === $profile->id) {
             $success = $post->delete() > 0;
+
             return response()->json(compact('success'));
         }
 
         $repost = $post->reposts()->where('profile_id', $currentProfile->id)->first();
 
-        if (!is_null($repost)) {
+        if (! is_null($repost)) {
             $success = $post->delete() > 0;
+
             return response()->json(compact('success'));
         }
 
         return response()->json(compact('success'));
     }
-
-
 }

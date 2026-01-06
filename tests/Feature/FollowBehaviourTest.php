@@ -6,8 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-
-test('profile cannot follow it self', function () {
+test('profile cannot follow it self', function (): void {
     $profile = Profile::factory()->create();
 
     expect(fn () => Follow::createFollow($profile, $profile))
@@ -15,8 +14,7 @@ test('profile cannot follow it self', function () {
 
 });
 
-
-test('profile can follow another profile', function () {
+test('profile can follow another profile', function (): void {
     $profile1 = Profile::factory()->create();
     $profile2 = Profile::factory()->create();
 
@@ -28,7 +26,7 @@ test('profile can follow another profile', function () {
         ->and($follow->following->id)->toBe($profile2->id);
 });
 
-test('profile can unfollow another profile', function () {
+test('profile can unfollow another profile', function (): void {
     $profile1 = Profile::factory()->create();
     $profile2 = Profile::factory()->create();
 
@@ -40,5 +38,3 @@ test('profile can unfollow another profile', function () {
         ->and($success)->toBeTrue()
         ->and($follow->fresh())->toBeNull();
 });
-
-

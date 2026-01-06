@@ -9,18 +9,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dev/login', function () {
-    $user = User::inRandomOrder()->first();
-    Auth::login($user);
-    request()->session()->regenerate();
-    return redirect()->intended(route('profile.show', $user->profile));
-})->name('login');
+if (app()->isLocal()) {
+    Route::get('/dev/login', function () {
+        $user = User::inRandomOrder()->first();
+        Auth::login($user);
+        request()->session()->regenerate();
 
-Route::middleware(['auth'])->group(function () {
+        return redirect()->intended(route('profile.show', $user->profile));
+    })->name('login');
+
+    Route::get('/dev/logout', function () {
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->intended('/home');
+    });
+}
+
+Route::middleware(['auth'])->group(function (): void {
     Route::get('/home', [PostController::class, 'index'])->name('posts.index');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
-    Route::scopeBindings()->group(function () {
+    Route::scopeBindings()->group(function (): void {
         Route::post('/{profile:handle}/status/{post}/reply', [PostController::class, 'reply'])
             ->name('posts.reply');
 
@@ -44,18 +55,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/{profile:handle}/unfollow', [ProfileController::class, 'unfollow'])->name('profile.unfollow');
 });
 
-Route::get('/dev/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect()->intended('/home');
-});
-
 Route::get('/{profile:handle}', [ProfileController::class, 'show'])->name('profile.show');
 Route::get('/{profile:handle}/with_replies', [ProfileController::class, 'replies'])->name('profile.replies');
 
-Route::scopeBindings()->group(function () {
+Route::scopeBindings()->group(function (): void {
     Route::get('/{profile:handle}/status/{post}', [PostController::class, 'show'])
         ->name('post.show');
 });
-

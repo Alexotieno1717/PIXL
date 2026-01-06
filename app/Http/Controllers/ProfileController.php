@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Follow;
-use App\Models\Post;
 use App\Models\Profile;
 use App\Queries\ProfilePageQuery;
 use App\Queries\ProfileWithRepliesQuery;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -19,7 +17,6 @@ class ProfileController extends Controller
         $profile->loadCount(['following', 'followers']);
 
         $posts = ProfilePageQuery::for($profile, Auth::user()?->profile)->get();
-
 
         return view('profile.show', compact('profile', 'posts'));
     }

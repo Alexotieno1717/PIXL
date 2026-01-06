@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Profile extends Model
 {
@@ -18,7 +17,7 @@ class Profile extends Model
         'display_name',
         'handle',
         'avatar_url',
-        'bio'
+        'bio',
     ];
 
     public function user(): BelongsTo
@@ -36,17 +35,17 @@ class Profile extends Model
         return $this->hasMany(Post::class)->whereNull('parent_id');
     }
 
-    public function likes():HasMany
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
     }
 
-    public function followers():BelongsToMany
+    public function followers(): BelongsToMany
     {
         return $this->belongsToMany(Profile::class, 'follows', 'following_profile_id', 'follower_profile_id');
     }
 
-    public function following():BelongsToMany
+    public function following(): BelongsToMany
     {
         return $this->belongsToMany(Profile::class, 'follows', 'follower_profile_id', 'following_profile_id');
     }

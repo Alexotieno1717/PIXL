@@ -12,7 +12,7 @@ class Reply extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public Post $post, public bool $showEngagement=true, public bool $showReplies=false)
+    public function __construct(public Post $post, public bool $showEngagement = true, public bool $showReplies = false)
     {
         //
     }
