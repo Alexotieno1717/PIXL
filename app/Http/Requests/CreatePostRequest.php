@@ -23,9 +23,10 @@ class CreatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|string',
+            'content' => 'required|string|min:3|max:280',
         ];
     }
+
 
     public function messages(): array
     {

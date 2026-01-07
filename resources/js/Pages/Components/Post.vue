@@ -54,9 +54,11 @@ defineProps({
                     </button>
                 </div>
                 <!-- Post content -->
-                <div class="[&_a]:text-pixel mt-4 flex flex-col gap-3 text-sm [&_a]:hover:underline">
+                <div class="[&_a]:text-pixl mt-4 flex flex-col gap-3 text-sm [&_a]:hover:underline">
                     <div v-html="post.content"></div>
-                    <ul v-if="!!post.repost_of && !!post.content">
+
+
+                    <ul v-if="!!post.repost_of">
                         <Post :post="post.repost_of" :show-engagement="false" />
                     </ul>
                 </div>

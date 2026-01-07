@@ -14,9 +14,17 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $content = $this->content;
+
+        // Decode if JSON
+        if (is_string($content)) {
+            $decoded = json_decode($content, true);
+            $content = $decoded['content'] ?? $content;
+        }
         return[
             'id' => $this->id,
-            'content' => $this->content,
+            'content' => $content,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'profile' => new ProfileResource($this->whenLoaded('profile')),

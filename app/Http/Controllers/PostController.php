@@ -13,6 +13,9 @@ use Inertia\Inertia;
 
 class PostController extends Controller
 {
+    /**
+     * @throws \Throwable
+     */
     public function index()
     {
         $profile = Auth::user()->profile;
@@ -40,7 +43,7 @@ class PostController extends Controller
 
         $post = Post::publish($profile, $request->content);
 
-        return redirect(route('posts.index'));
+        return to_route('posts.index');
     }
 
     public function reply(Profile $profile, Post $post, CreatePostRequest $request)
@@ -49,7 +52,7 @@ class PostController extends Controller
 
         $post = Post::reply($currentProfile, $post, $request->content);
 
-        return redirect(route('posts.index'));
+        return to_route('posts.index');
     }
 
     public function repost(Profile $profile, Post $post)
@@ -58,7 +61,7 @@ class PostController extends Controller
 
         $post = Post::repost($currentProfile, $post);
 
-        return redirect(route('posts.index'));
+        return to_route('posts.index');
     }
 
     public function quote(Profile $profile, Post $post, CreatePostRequest $request)
@@ -67,7 +70,7 @@ class PostController extends Controller
 
         $post = Post::repost($currentProfile, $post, $request->content);
 
-        return redirect(route('posts.index'));
+        return to_route('posts.index');
     }
 
     public function like(Profile $profile, Post $post)
