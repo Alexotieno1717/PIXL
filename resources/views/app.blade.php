@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
-    <title>{{ $title }}</title>
+    <title>PIXL</title>
+    @routes
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @inertiaHead
 </head>
-<body class="bg-pixel-dark text-pixel-light flex gap-16 px-4 h-dvh overflow-clip">
-    <x-navigation />
+<body >
 
-        {{ $slot }}
+    @inertia
 
-    <x-aside />
 </body>
 </html>

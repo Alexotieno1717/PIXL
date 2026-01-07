@@ -5,9 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'home');
 
 if (app()->isLocal()) {
     Route::get('/dev/login', function () {
