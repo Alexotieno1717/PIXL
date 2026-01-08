@@ -17,6 +17,7 @@ class ProfileResource extends JsonResource
         return [
             'id' => $this->id,
             'handle' => $this->handle,
+            'display_name' => $this->display_name,
             'avatar_url' => $this->avatar_url,
             // Include counts only when they were actually loaded
             'followers_count' => $this->whenCounted('followers'),

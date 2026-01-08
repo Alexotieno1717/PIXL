@@ -1,19 +1,20 @@
 <script setup>
 
 import HeartIcon from "./Icons/HeartIcon.vue";
+import {Form} from "@inertiajs/vue3";
 
 defineProps({
-    active: {type: Boolean, default: false},
-    count: {type: Number, default: 0},
+    post: Object
 })
 </script>
 
 <template>
-    <div class="flex items-center gap-1">
-        <button aria-label="Like" :class="active ? 'hover:text-pixel text-pixel' : ''">
-            <HeartIcon />
-        </button>
-        <span :class="active ? 'hover:text-pixel text-pixel' : ''" class="text-sm">{{ count }}</span>
-    </div>
-
+    <Form method="POST" :action="route(post.has_liked ?'posts.unlike' : 'posts.like', [post.profile, post])">
+        <div class="flex items-center gap-1">
+            <button aria-label="Like" :class="post.has_liked ? 'hover:text-pixel text-pixel' : ''">
+                <HeartIcon />
+            </button>
+            <span :class="post.has_liked ? 'hover:text-pixel text-pixel' : ''" class="text-sm">{{ post.likes_count }}</span>
+        </div>
+    </Form>
 </template>

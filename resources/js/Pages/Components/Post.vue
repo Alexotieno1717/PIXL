@@ -57,7 +57,6 @@ defineProps({
                 <div class="[&_a]:text-pixl mt-4 flex flex-col gap-3 text-sm [&_a]:hover:underline">
                     <div v-html="post.content"></div>
 
-
                     <ul v-if="!!post.repost_of">
                         <Post :post="post.repost_of" :show-engagement="false" />
                     </ul>
@@ -66,9 +65,9 @@ defineProps({
                 <div v-if="showEngagement" class="mt-6 flex items-center justify-between gap-4">
 
                     <div class="flex items-center gap-8">
-                        <LikeButton :active="post.has_liked" :count="post.likes_count" :id="post.id" />
+                        <LikeButton :post="post" />
                         <ReplyButton :count="post.replies_count" :id="post.id" />
-                        <RepostButton :active="post.has_reposted" :count="post.reposts_count" :id="post.id" />
+                        <RepostButton :post="post" />
                     </div>
                     <div class="flex items-center gap-3">
                         <SaveButton :id="post.id" />

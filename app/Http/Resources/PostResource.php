@@ -15,23 +15,21 @@ class PostResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $content = $this->content;
-
-        // Decode if JSON
-        if (is_string($content)) {
-            $decoded = json_decode($content, true);
-            $content = $decoded['content'] ?? $content;
-        }
-        return[
+        return [
             'id' => $this->id,
-            'content' => $content,
-            'created_at' => $this->created_at,
+            'content' => $this->content,
+            'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at,
             'profile' => new ProfileResource($this->whenLoaded('profile')),
-            'repost_of' => new PostResource($this->whenLoaded('repost_of')),
+            'repost_of' => new PostResource($this->whenLoaded('repostOf')),
             'replies' => PostResource::collection($this->whenLoaded('replies')),
+            'replies_count' => $this->whenCounted('replies'),
             'likes' => LikeResource::collection($this->whenLoaded('likes')),
+            'likes_count' => $this->whenCounted('likes'),
+            'has_liked' => $this->has_liked,
             'reposts' => PostResource::collection($this->whenLoaded('reposts')),
+            'reposts_count' => $this->whenCounted('reposts'),
+            'has_reposted' => $this->has_reposted,
         ];
     }
 }

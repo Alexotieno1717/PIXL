@@ -2,20 +2,22 @@
 
 
 import RepostIcon from "./Icons/RepostIcon.vue";
+import {Form} from "@inertiajs/vue3";
 
 defineProps({
-    active: {type: Boolean, default: false},
-    count: {type: Number, default: 0},
+    post: Object,
 })
 </script>
 
 <template>
-    <div class="flex items-center gap-1">
-        <button aria-label="Re-post" :class="active ? 'hover:text-pixel text-pixel' : ''">
-            <RepostIcon />
-        </button>
-        <span :class="active ? 'hover:text-pixel text-pixel' : ''" class="text-sm">{{ count }}</span>
-    </div>
+    <Form method="POST" :action="route('posts.repost', [post.profile, post])">
+        <div class="flex items-center gap-1">
+            <button aria-label="Re-post" :class="post.has_reposted ? 'hover:text-pixel text-pixel' : ''">
+                <RepostIcon />
+            </button>
+            <span :class="post.has_reposted ? 'hover:text-pixel text-pixel' : ''" class="text-sm">{{ post.reposts_count }}</span>
+        </div>
+    </Form>
 
 </template>
 
