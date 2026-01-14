@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Queries;
 
 use App\Models\Post;
@@ -9,19 +11,20 @@ class PostThreadQuery
 {
     public function __construct(
         private Post $post,
-        private ?Profile $viewer) {}
+        private ?Profile $profile) {}
 
-    public static function for(Post $post, ?Profile $viewer): self
+    public static function for(Post $post, ?Profile $profile): self
     {
-        return new self($post, $viewer);
+        return new self($post, $profile);
     }
 
     public function load(): Post
     {
 
-        $viewerId = $this->viewer?->id ?? 0;
+        $viewerId = $this->profile?->id ?? 0;
 
         $this->post->load([
+            'profile',
             'replies' => fn ($q) => $q
                 ->withCount(['likes', 'replies', 'reposts'])
                 ->withExists([

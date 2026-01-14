@@ -33,7 +33,7 @@ defineProps({
                     <p>
                         <a class="hover:underline" :href="route('profile.show', post.profile)">{{ post.profile.display_name }}</a>
                     </p>
-                    <p class="text-pixel-light/40 text-xs"><a :href="route('post.show', [$post.profile, $post])" >{{ post.created_at }}</a></p>
+                    <p class="text-pixel-light/40 text-xs"><a :href="route('post.show', [post.profile, post])" >{{ post.created_at }}</a></p>
                     <p>
                         <a
                             class="text-pixel-light/40 hover:text-pixel-light/60 text-xs"

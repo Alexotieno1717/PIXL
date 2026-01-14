@@ -16,12 +16,18 @@ class ProfileResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'handle' => $this->handle,
-            'display_name' => $this->display_name,
+            'cover_url' => $this->cover_url,
             'avatar_url' => $this->avatar_url,
-            // Include counts only when they were actually loaded
+            'display_name' => $this->display_name,
+            'handle' => $this->handle,
+            'bio' => $this->bio,
             'followers_count' => $this->whenCounted('followers'),
             'followings_count' => $this->whenCounted('followings'),
+            'posts_count' => $this->whenCounted('posts'),
+            'replies_count' => $this->whenCounted('replies'),
+            'reposts_count' => $this->whenCounted('reposts'),
+            'likes_count' => $this->whenCounted('likes'),
+            'has_followed' => $this->has_followed ?? false,
         ];
     }
 }

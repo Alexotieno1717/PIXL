@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'home');
 
-if (app()->isLocal()) {
+if (! app()->isProduction()) {
     Route::get('/dev/login', function () {
-        $user = User::inRandomOrder()->first();
+        $user = User::first();
+
         Auth::login($user);
         request()->session()->regenerate();
 
@@ -21,7 +22,7 @@ if (app()->isLocal()) {
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect()->intended('/home');
+        return redirect('/');
     });
 }
 

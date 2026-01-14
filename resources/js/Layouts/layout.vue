@@ -1,6 +1,7 @@
 <script setup>
 import Navigation from "../Pages/Components/Navigation.vue";
 import Aside from "../Pages/Components/Aside.vue";
+import FlashMessages from "../Pages/Components/FlashMessages.vue";
 
 </script>
 
@@ -11,6 +12,8 @@ import Aside from "../Pages/Components/Aside.vue";
         <slot />
 
         <Aside />
+
+        <FlashMessages />
     </div>
 </template>
 

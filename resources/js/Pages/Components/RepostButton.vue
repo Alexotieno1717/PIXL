@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <Form method="POST" :action="route('posts.repost', [post.profile, post])">
+    <Form method="POST"  v-if="post && post.profile" :action="route('posts.repost', [post.profile, post])">
         <div class="flex items-center gap-1">
             <button aria-label="Re-post" :class="post.has_reposted ? 'hover:text-pixel text-pixel' : ''">
                 <RepostIcon />

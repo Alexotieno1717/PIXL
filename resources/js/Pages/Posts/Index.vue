@@ -3,6 +3,7 @@
   import Layout from "@/Layouts/layout.vue";
   import PostForm from "../Components/PostForm.vue";
   import Post from "../Components/Post.vue";
+  import AppFooter from "../Components/AppFooter.vue";
 
   defineProps({
       profile: Object,
@@ -32,19 +33,14 @@
           </div>
 
           <!-- Post prompt -->
-          <PostForm :profile />
+          <PostForm :profile="profile" />
 
           <!-- Feed -->
           <ol class="mt-4">
               <Post v-for="item in posts" :key="item.id" :post="item" />
           </ol>
 
-          <footer class="mt-30 ml-14">
-              <p class="text-center">That's all, folks!</p>
-              <hr class="border-pixel-light/10 my-4" />
-              <!-- White noise -->
-              <div class="h-20 bg-[url(/resources/images/white-noise.gif)]"></div>
-          </footer>
+          <AppFooter />
       </main>
 
   </Layout>

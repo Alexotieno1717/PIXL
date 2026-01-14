@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class PostResource extends JsonResource
 {
@@ -30,6 +31,9 @@ class PostResource extends JsonResource
             'reposts' => PostResource::collection($this->whenLoaded('reposts')),
             'reposts_count' => $this->whenCounted('reposts'),
             'has_reposted' => $this->has_reposted,
+            'can' => [
+                'update' => Auth::user()->can('update', $this->resource),
+            ],
         ];
     }
 }

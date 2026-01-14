@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Follow;
@@ -7,45 +9,51 @@ use App\Models\Profile;
 use App\Queries\ProfilePageQuery;
 use App\Queries\ProfileWithRepliesQuery;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
-    //
     public function show(Profile $profile)
     {
-        // Profile follower/following counts
         $profile->loadCount(['following', 'followers']);
+
+        $profile->has_followed = Auth::user()?->profile->isFollowing($profile);
 
         $posts = ProfilePageQuery::for($profile, Auth::user()?->profile)->get();
 
-        return view('profile.show', compact('profile', 'posts'));
+        return Inertia::render('Profiles/Show', [
+            'profile' => $profile->toResource(),
+            'posts' => $posts->toResourceCollection(),
+        ]);
     }
 
     public function replies(Profile $profile)
     {
-        // Profile follower/following counts
         $profile->loadCount(['following', 'followers']);
 
         $posts = ProfileWithRepliesQuery::for($profile, Auth::user()?->profile)->get();
 
-        return view('profile.replies', compact('profile', 'posts'));
+        return Inertia::render('Profiles/Show', [
+            'profile' => $profile->toResource(),
+            'posts' => $posts->toResourceCollection(),
+        ]);
     }
 
     public function follow(Profile $profile)
     {
         $currentProfile = Auth::user()->profile;
 
-        $follow = Follow::createFollow($currentProfile, $profile);
+        Follow::createFollow($currentProfile, $profile);
 
-        return response()->json(compact('follow'));
+        return back()->with('success', 'You are now following '.$profile->handle);
     }
 
     public function unfollow(Profile $profile)
     {
         $currentProfile = Auth::user()->profile;
 
-        $success = Follow::removeFollow($currentProfile, $profile);
+        Follow::removeFollow($currentProfile, $profile);
 
-        return response()->json(compact('success'));
+        return back()->with('success', 'You have now unfollowed '.$profile->handle);
     }
 }

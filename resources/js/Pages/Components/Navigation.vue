@@ -1,6 +1,12 @@
 <script setup>
 
 import Logo from "./Logo.vue";
+import {computed} from "vue";
+import {usePage} from "@inertiajs/vue3";
+
+let currentProfile = computed(() => {
+    return usePage().props.auth.user.profile;
+});
 </script>
 
 <template>
@@ -14,11 +20,15 @@ import Logo from "./Logo.vue";
             <!-- Navigation -->
             <nav class="mt-10">
                 <ul class="flex flex-col gap-3.5">
-                    <li><a class="hover:underline" href="route('posts.index')">Home</a></li>
+                    <li class="flex  items-center gap-2">
+                        <div v-if="$page.component === 'Posts/Index'" class="bg-pixel -ml-4 size-2 shrink-0"></div>
+                        <a :href="route('posts.index')" class="hover:underline" :class="{ 'text-pixel': $page.component === 'Posts/Index' }">Home</a>
+                    </li>
+                    <li>
+                        <a :href="route('profile.show', currentProfile)" class="hover:underline" :class="{ 'text-pixel': $page.component === 'Profiles/Show' }">Profile</a>
+                    </li>
                     <li><a class="hover:underline" href="#">Explore</a></li>
-                    <!-- Active item -->
-                    <li class="flex -ml-4 items-center gap-2">
-                        <div class="bg-pixel size-2 shrink-0"></div>
+                    <li class="flex items-center gap-2">
                         <a class="hover:underline" href="#">Notifications</a>
                     </li>
 
@@ -27,42 +37,31 @@ import Logo from "./Logo.vue";
                     <li><a class="hover:underline" href="#">Jobs</a></li>
                     <li><a class="hover:underline" href="#">Communities</a></li>
                     <li><a class="hover:underline" href="#">Premium</a></li>
-                    <li><a class="hover:underline" href="#">Profile</a></li>
                     <li><a class="hover:underline" href="#">More</a></li>
                 </ul>
             </nav>
         </div>
 
         <div class="flex flex-col gap-6">
-            <!--  TODO: This should only display if we are not on the posts.index route -->
-            <button
-                class="bg-pixel hover:bg-pixel/90 active:bg-pixel/95 text-pixel-dark border border-transparent px-4 py-3 text-sm"
-            >
+            <!-- TODO: This should only display if we are NOT on the posts.index route. -->
+            <Link v-show="$page.component !== 'Posts/Index'" :href="route('posts.index')"
+                  class="bg-pixl hover:bg-pixl/90 active:bg-pixl/95 text-pixl-dark border border-transparent px-4 py-3 text-sm text-center">
                 Post
-            </button>
-            <!--             User controls -->
+            </Link>
+            <!-- User controls -->
             <div class="flex gap-3.5">
-                <a href="/profile" class="shrink-0">
-                    <img
-                        src="/images/adrian.png"
-                        alt="Avatar for Adrian"
-                        class="size-11 object-cover"
-                    />
+                <a :href="route('profile.show', currentProfile)" class="shrink-0">
+                    <img :src="currentProfile.avatar_url"
+                         :alt="`Avatar for ${currentProfile.handle}`" class="size-11 object-cover" />
                 </a>
                 <div class="flex flex-col gap-1 text-sm">
-                    <p>_adrian</p>
-                    <p class="text-pixel-light/60">@tudssss</p>
+                    <p>{{ currentProfile.display_name }}</p>
+                    <p class="text-pixl-light/60">@{{ currentProfile.handle }}</p>
                 </div>
                 <button class="group flex gap-[3px] py-2" aria-label="Post options">
-          <span
-              class="bg-pixel-light/40 group-hover:bg-pixel-light/60 size-1"
-          ></span>
-                    <span
-                        class="bg-pixel-light/40 group-hover:bg-pixel-light/60 size-1"
-                    ></span>
-                    <span
-                        class="bg-pixel-light/40 group-hover:bg-pixel-light/60 size-1"
-                    ></span>
+                    <span class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"></span>
+                    <span class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"></span>
+                    <span class="bg-pixl-light/40 group-hover:bg-pixl-light/60 size-1"></span>
                 </button>
             </div>
         </div>
